@@ -1,9 +1,9 @@
 {
-    "name": "Rkn-AutoCaptionBot",
+    "name": "AutoCaptionBot",
     "description": "Telegram Channel Auto Caption Bot ",
-    "logo": "https://telegra.ph/file/21a8e96b45cd6ac4d3da6.jpg",
+    "logo": "https://graph.org/file/c63a1165095436e2a0599-ddaa4e91edbaa2b375.jpg",
     "keywords": ["AutoCaptionBot", "Mongo DB"],    
-    "repository": "https://github.com/RknDeveloper/Rkn-AutoCaptionBot",
+    "repository": "https://telegram.dog/Talk2support_bot",
     "env": {
         "API_ID": {
             "description": "Your APP ID From my.telegram.org ",
