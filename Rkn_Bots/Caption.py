@@ -6,7 +6,7 @@
 
 from pyrogram import Client, filters, errors, types
 from config import Rkn_Bots
-import asyncio, re, time, sys
+import asyncio, re, time, sys, os
 from .database import total_user, getid, delete, addCap, updateCap, insert, chnl_ids
 from pyrogram.errors import FloodWait
 
@@ -50,7 +50,7 @@ async def broadcast(bot, message):
             try:
                 await rkn.edit(f"<u>ʙʀᴏᴀᴅᴄᴀsᴛ ᴘʀᴏᴄᴇssɪɴɢ</u>\n\n• ᴛᴏᴛᴀʟ ᴜsᴇʀs: {tot}\n• sᴜᴄᴄᴇssғᴜʟ: {success}\n• ʙʟᴏᴄᴋᴇᴅ ᴜsᴇʀs: {blocked}\n• ᴅᴇʟᴇᴛᴇᴅ ᴀᴄᴄᴏᴜɴᴛs: {deactivated}\n• ᴜɴsᴜᴄᴄᴇssғᴜʟ: {failed}")
             except FloodWait as e:
-                await asyncio.sleep(t.x)
+                await asyncio.sleep(e.x)
         await rkn.edit(f"<u>ʙʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴘʟᴇᴛᴇᴅ</u>\n\n• ᴛᴏᴛᴀʟ ᴜsᴇʀs: {tot}\n• sᴜᴄᴄᴇssғᴜʟ: {success}\n• ʙʟᴏᴄᴋᴇᴅ ᴜsᴇʀs: {blocked}\n• ᴅᴇʟᴇᴛᴇᴅ ᴀᴄᴄᴏᴜɴᴛs: {deactivated}\n• ᴜɴsᴜᴄᴄᴇssғᴜʟ: {failed}")
         
 # Restart to cancell all process 
@@ -120,7 +120,6 @@ def extract_language(file_name):
 def extract_year(file_name):
     match = re.search(r'\b(19\d{2}|20\d{2})\b', file_name)
     return match.group(1) if match else None
-	
 
 @Client.on_message(filters.channel)
 async def auto_edit_caption(bot, message):
@@ -141,12 +140,21 @@ async def auto_edit_caption(bot, message):
                     if cap_dets:
                         cap = cap_dets["caption"]
                         replaced_caption = cap.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
-                        await message.edit(replaced_caption)
+                        # Add SHIMPERD BRO to caption
+                        replaced_caption = f"{replaced_caption}\n\nUploaded By: SHIMPERD BRO"
+                        if replaced_caption != message.caption:  # Only edit if the caption is different
+                            await message.edit(replaced_caption)
                     else:
-                        replaced_caption = shimperd.DEF_CAP.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
-                        await message.edit(replaced_caption)
+                        replaced_caption = Rkn_Bots.DEF_CAP.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
+                        # Add SHIMPERD BRO to caption
+                        replaced_caption = f"{replaced_caption}\n\nUploaded By: SHIMPERD BRO"
+                        if replaced_caption != message.caption:  # Only edit if the caption is different
+                            await message.edit(replaced_caption)
                 except FloodWait as e:
                     await asyncio.sleep(e.x)
+                    continue
+                except Exception as e:
+                    print(f"Error editing caption: {str(e)}")
                     continue
     return
 
