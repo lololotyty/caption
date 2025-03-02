@@ -141,13 +141,13 @@ async def auto_edit_caption(bot, message):
                         cap = cap_dets["caption"]
                         replaced_caption = cap.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
                         # Add SHIMPERD BRO to caption
-                        replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO</b>"
+                        replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO 👑</b>"
                         if replaced_caption != message.caption:  # Only edit if the caption is different
                             await message.edit(replaced_caption)
                     else:
                         replaced_caption = Rkn_Bots.DEF_CAP.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
                         # Add SHIMPERD BRO to caption
-                        replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO</b>"
+                        replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO 👑</b>"
                         if replaced_caption != message.caption:  # Only edit if the caption is different
                             await message.edit(replaced_caption)
                 except FloodWait as e:
