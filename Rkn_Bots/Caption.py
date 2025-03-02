@@ -66,7 +66,7 @@ async def start_cmd(bot, message):
     user_id = int(message.from_user.id)
     await insert(user_id)
     await message.reply_photo(photo=Rkn_Bots.RKN_PIC,
-        caption=f"<b>Hey, {message.from_user.mention}\n\nI'm an auto-caption bot made by shimperd. I automatically edit captions for videos, audio files, and documents posted on channels.\n\nuse <code>/set_caption</code> to set caption\nUse<code>/delcaption</code> To delete caption and set caption to default.\n\nNote:All commands works on channels only</b>",
+        caption=f"<b>Hey, {message.from_user.mention}\n\nI'm an auto-caption bot made by shimperd 🔥. I automatically edit captions for videos, audio files, and documents posted on channels. 18+ is strictly prohibited and will ban your channel.\n\nuse <code>/set_caption</code> to set caption\nUse<code>/delcaption</code> To delete caption and set caption to default.\n\nNote:All commands works on channels only</b>",
         reply_markup=types.InlineKeyboardMarkup([[
             types.InlineKeyboardButton('Main Channel', url='https://t.me/save_restricted_botss'),
             types.InlineKeyboardButton('Help Group', url='https://telegram.dog/Talk2support_bot')
