@@ -8,7 +8,7 @@ from pyrogram import Client, filters, errors, types
 from config import Rkn_Bots
 import asyncio, re, time, sys, os
 from .database import total_user, getid, delete, addCap, updateCap, insert, chnl_ids
-from pyrogram.errors import FloodWait
+from pyrogram.errors import FloodWait, MessageNotModified
 
 @Client.on_message(filters.private & filters.user(Rkn_Bots.ADMIN)  & filters.command(["rknusers"]))
 async def all_db_users_here(client, message):
@@ -154,9 +154,7 @@ async def auto_edit_caption(bot, message):
                             replaced_caption = cap.format(file_name=display_file_name, caption=caption, 
                                                          language=extract_language(display_file_name), 
                                                          year=extract_year(display_file_name))
-                            
-                        # Add SHIMPERD BRO to caption
-                        replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO 👑</b>"
+                        
                         if replaced_caption != message.caption:  # Only edit if the caption is different
                             await message.edit(replaced_caption)
                     else:
@@ -167,13 +165,14 @@ async def auto_edit_caption(bot, message):
                             replaced_caption = Rkn_Bots.DEF_CAP.format(file_name=display_file_name, caption=caption,
                                                                       language=extract_language(display_file_name), 
                                                                       year=extract_year(display_file_name))
-                            
-                        # Add SHIMPERD BRO to caption
-                        replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO 👑</b>"
+                        
                         if replaced_caption != message.caption:  # Only edit if the caption is different
                             await message.edit(replaced_caption)
                 except FloodWait as e:
                     await asyncio.sleep(e.x)
+                    continue
+                except MessageNotModified:
+                    # Silently ignore message not modified errors
                     continue
                 except Exception as e:
                     print(f"Error editing caption: {str(e)}")
