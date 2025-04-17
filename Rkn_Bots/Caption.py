@@ -129,23 +129,45 @@ async def auto_edit_caption(bot, message):
             obj = getattr(message, file_type, None)
             if obj and hasattr(obj, "file_name"):
                 file_name = obj.file_name
-                file_name = (
-                    re.sub(r"@\w+\s*", "", file_name)
-                    .replace("_", " ")
-                    .replace(".", " ")
-                )
+                
+                # Use message caption or empty string if file_name is None
+                display_file_name = ""
+                if file_name is not None:
+                    display_file_name = (
+                        re.sub(r"@\w+\s*", "", file_name)
+                        .replace("_", " ")
+                        .replace(".", " ")
+                    )
+                
+                # Use original message caption if available, otherwise use processed file_name
+                caption = message.caption if message.caption else display_file_name
+                
+                # Get user-defined caption format for this channel
                 cap_dets = await chnl_ids.find_one({"chnl_id": chnl_id})
-                caption = message.caption if message.caption else file_name
                 try:
                     if cap_dets:
                         cap = cap_dets["caption"]
-                        replaced_caption = cap.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
+                        # If no file_name, only use available data in format
+                        if file_name is None:
+                            replaced_caption = cap.format(file_name="", caption=caption, language="Unknown", year=None)
+                        else:
+                            replaced_caption = cap.format(file_name=display_file_name, caption=caption, 
+                                                         language=extract_language(display_file_name), 
+                                                         year=extract_year(display_file_name))
+                            
                         # Add SHIMPERD BRO to caption
                         replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO 👑</b>"
                         if replaced_caption != message.caption:  # Only edit if the caption is different
                             await message.edit(replaced_caption)
                     else:
-                        replaced_caption = Rkn_Bots.DEF_CAP.format(file_name=file_name, caption=caption, language=extract_language(file_name), year=extract_year(file_name))
+                        # If no user-defined caption, use default caption
+                        if file_name is None:
+                            replaced_caption = Rkn_Bots.DEF_CAP.format(file_name="", caption=caption, language="Unknown", year=None)
+                        else:
+                            replaced_caption = Rkn_Bots.DEF_CAP.format(file_name=display_file_name, caption=caption,
+                                                                      language=extract_language(display_file_name), 
+                                                                      year=extract_year(display_file_name))
+                            
                         # Add SHIMPERD BRO to caption
                         replaced_caption = f"{replaced_caption}\n\n<b>SHIMPERD BRO 👑</b>"
                         if replaced_caption != message.caption:  # Only edit if the caption is different
